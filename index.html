@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- Tools section -->
+
+    <div class="tools">
+      <div class="pri_selector">
+        <div id="pri_title"><p>Choose Priority</p></div>
+        <div id="pri_1" class="priority"></div>
+        <div id="pri_2" class="priority"></div>
+        <div id="pri_3" class="priority"></div>
+        <div id="pri_4" class="priority"></div>
+      </div>
+      <div class="tool_btn">
+        <div id="add_task">
+          <svg
+            id="add_task_btn"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="rgb(0, 0, 87)"
+          >
+            <path
+              d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM11 11H7V13H11V17H13V13H17V11H13V7H11V11Z"
+            ></path>
+          </svg>
+        </div>
+        <div id="delete_task">
+          <svg
+            id="delete_task_btn"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="rgb(0, 0, 87)"
+          >
+            <path
+              d="M4 8H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V8ZM6 10V20H18V10H6ZM9 12H11V18H9V12ZM13 12H15V18H13V12ZM7 5V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V5H22V7H2V5H7ZM9 4V5H15V4H9Z"
+            ></path>
+          </svg>
+        </div>
+        <div id="clear_selection">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="rgb(0, 0, 87)"
+          >
+            <path
+              d="M12.9998 3L12.9996 10.267L19.294 6.63397L20.294 8.36602L14.0006 11.999L20.294 15.634L19.294 17.366L12.9996 13.732L12.9998 21H10.9998L10.9996 13.732L4.70557 17.366L3.70557 15.634L9.99857 12L3.70557 8.36602L4.70557 6.63397L10.9996 10.267L10.9998 3H12.9998Z"
+            ></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+
+    <div class="main">
+      <!-- Enpty Task Manager -->
+
+      <h1>No items in Task Manager,<br />Lets start adding items...</h1>
+
+      <!-- Create new task -->
+
+      <div class="input_task">
+        <div class="input_content">
+          <textarea> </textarea>
+        </div>
+        <div class="input_priority">
+          <div id="pri_1" class="priority"></div>
+          <div id="pri_2" class="priority"></div>
+          <div id="pri_3" class="priority"></div>
+          <div id="pri_4" class="priority"></div>
+          <div id="done" class="priority">Done</div>
+        </div>
+      </div>
+
+      <!-- Tasks -->
+
+      <!-- <div class="task">
+        <div class="task_header"></div>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path
+            d="M6 8V7C6 3.68629 8.68629 1 12 1C15.3137 1 18 3.68629 18 7V8H20C20.5523 8 21 8.44772 21 9V21C21 21.5523 20.5523 22 20 22H4C3.44772 22 3 21.5523 3 21V9C3 8.44772 3.44772 8 4 8H6ZM19 10H5V20H19V10ZM11 15.7324C10.4022 15.3866 10 14.7403 10 14C10 12.8954 10.8954 12 12 12C13.1046 12 14 12.8954 14 14C14 14.7403 13.5978 15.3866 13 15.7324V18H11V15.7324ZM8 8H16V7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7V8Z"
+          ></path>
+        </svg>
+      </div> -->
+    </div>
+  </body>
+  <script src="script.js"></script>
+</html>
