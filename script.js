@@ -11,6 +11,7 @@ add_task.addEventListener("click", () => {
 
 delete_task.addEventListener("click", () => {
   delete_task.setAttribute("class", "delete_task_btn");
+  k;
 });
 
 let show_input_task_box = () => {
