@@ -129,6 +129,11 @@ body {
   resize: none;
 }
 
+.input_content>textarea::placeholder {
+  content: "Rajesh";
+  color: black;
+}
+
 .input_priority {
   margin: 0;
   padding: 0rem;
@@ -153,10 +158,11 @@ body {
   height: 15rem;
   background-color: rgb(255, 255, 170);
   position: relative;
+  display: none;
 }
 
 .task_header {
-  height: 2rem;
+  height: 1rem;
   background-color: yellow;
 }
 
@@ -166,4 +172,9 @@ body {
   bottom: 0.2rem;
   right: 0.2rem;
   cursor: pointer;
+}
+
+.task>p {
+  margin: 0.5rem;
+  overflow: hidden;
 }
