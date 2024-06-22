@@ -4,7 +4,7 @@ let main = document.querySelector(".main");
 let input_task = document.querySelector(".input_task");
 let done = document.querySelector("#done");
 let input_data = document.querySelector(".input_content>textarea");
-let task_arr = {};
+let task_arr = [];
 
 add_task.addEventListener("click", () => {
   add_task.setAttribute("class", "add_task_btn");
@@ -38,5 +38,6 @@ let show_input_task_box = () => {
     task_arr.push(input_data.value);
     add_task.removeAttribute("class", "add_task_btn");
     show_task_box(textarea_data);
+    console.log(task_arr);
   });
 };
