@@ -156,10 +156,17 @@ body {
   background-color: rgb(0, 0, 87);
 }
 
+.task_container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
 .task {
   margin: 1rem;
-  width: 12rem;
-  height: 15rem;
+  width: 15rem;
+  height: 18rem;
   background-color: rgb(255, 255, 170);
   position: relative;
 }
@@ -179,5 +186,5 @@ body {
 
 .task > p {
   margin: 0.5rem;
-  overflow: hidden;
+  word-wrap: break-word;
 }
