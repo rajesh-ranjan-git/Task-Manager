@@ -7,14 +7,42 @@ let task = document.querySelector(".task");
 let no_task = document.querySelector(".main h1");
 let done = document.querySelector(".done");
 let input_data = document.querySelector(".input_content>textarea");
-let pri_1_input = document.querySelector("#pri_1_input");
-let pri_2_input = document.querySelector("#pri_2_input");
-let pri_3_input = document.querySelector("#pri_3_input");
-let pri_4_input = document.querySelector("#pri_4_input");
-let lock = document.querySelector(".task>svg");
+let input_priority = document.querySelector(".input_priority");
+let filtered_data = document.querySelector(".pri_selector");
+let clear_selection = document.querySelector("#clear_selection");
+let all_data = [];
 let task_arr = [];
 let task_obj = "";
 let counter = 0;
+
+let show = (task_arr) => {
+  task_item_container.style.display = "flex";
+  let task_counter = 1;
+  task_item_container.innerHTML = "";
+  for (let i = 0; i < task_arr.length; i++) {
+    let task_item = document.createElement("div");
+    task_item.classList.add("task");
+    task_item.setAttribute("id", task_counter);
+    task_item.innerHTML = `<div class="task_header"></div>
+        <p id="task_data">${task_arr[i].text}</p>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path
+            d="M6 8V7C6 3.68629 8.68629 1 12 1C15.3137 1 18 3.68629 18 7V8H20C20.5523 8 21 8.44772 21 9V21C21 21.5523 20.5523 22 20 22H4C3.44772 22 3 21.5523 3 21V9C3 8.44772 3.44772 8 4 8H6ZM19 10H5V20H19V10ZM11 15.7324C10.4022 15.3866 10 14.7403 10 14C10 12.8954 10.8954 12 12 12C13.1046 12 14 12.8954 14 14C14 14.7403 13.5978 15.3866 13 15.7324V18H11V15.7324ZM8 8H16V7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7V8Z"
+          ></path>
+        </svg>`;
+    task_item_container.appendChild(task_item);
+
+    set_header_color(task_arr, i);
+
+    task_counter++;
+  }
+
+  let lock = document.querySelector(".task>svg");
+};
 
 add_task.addEventListener("click", () => {
   add_task.classList.add("add_task_btn");
@@ -39,10 +67,18 @@ delete_task.addEventListener("click", () => {
   }
 });
 
+clear_selection.addEventListener("click", () => {
+  let task_arr = localStorage.getItem("task_arr");
+  task_arr = JSON.parse(task_arr);
+
+  if (task_arr != null) {
+    show(task_arr);
+  }
+});
+
 let set_header_color = (task_arr, i) => {
-  console.log(task_arr[i]);
   if (task_arr[i].priority == 0) {
-    task_item_container.children[i].firstChild.style.backgroundColor = "black";
+    task_item_container.children[i].firstChild.style.backgroundColor = "grey";
   } else if (task_arr[i].priority == 1) {
     task_item_container.children[i].firstChild.style.backgroundColor = "red";
   } else if (task_arr[i].priority == 2) {
@@ -63,72 +99,26 @@ let show_task_box = () => {
     no_task.style.display = "block";
     task_item_container.style.display = "none";
   } else {
-    task_item_container.style.display = "flex";
-    let task_counter = 1;
-    task_item_container.innerHTML = "";
-    for (let i = 0; i < task_arr.length; i++) {
-      let task_item = document.createElement("div");
-      task_item.classList.add("task");
-      task_item.setAttribute("id", task_counter);
-      task_item.innerHTML = `<div class="task_header"></div>
-        <p id="task_data">${task_arr[i].text}</p>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-        >
-          <path
-            d="M6 8V7C6 3.68629 8.68629 1 12 1C15.3137 1 18 3.68629 18 7V8H20C20.5523 8 21 8.44772 21 9V21C21 21.5523 20.5523 22 20 22H4C3.44772 22 3 21.5523 3 21V9C3 8.44772 3.44772 8 4 8H6ZM19 10H5V20H19V10ZM11 15.7324C10.4022 15.3866 10 14.7403 10 14C10 12.8954 10.8954 12 12 12C13.1046 12 14 12.8954 14 14C14 14.7403 13.5978 15.3866 13 15.7324V18H11V15.7324ZM8 8H16V7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7V8Z"
-          ></path>
-        </svg>`;
-      task_item_container.appendChild(task_item);
-
-      set_header_color(task_arr, i);
-
-      task_counter++;
-    }
+    show(task_arr);
   }
 };
 
 let activate_priority = () => {
   let set_active_priority = [false, false, false, false];
-  pri_1_input.addEventListener("click", () => {
-    set_active_priority[0] = pri_1_input.classList.toggle("active");
-    console.log(set_active_priority[0]);
-    pri_2_input.classList.remove("active");
-    pri_3_input.classList.remove("active");
-    pri_4_input.classList.remove("active");
-    set_active_priority[1] = false;
-    set_active_priority[2] = false;
-    set_active_priority[3] = false;
-  });
-  pri_2_input.addEventListener("click", () => {
-    set_active_priority[1] = pri_2_input.classList.toggle("active");
-    pri_1_input.classList.remove("active");
-    pri_3_input.classList.remove("active");
-    pri_4_input.classList.remove("active");
-    set_active_priority[0] = false;
-    set_active_priority[2] = false;
-    set_active_priority[3] = false;
-  });
-  pri_3_input.addEventListener("click", () => {
-    set_active_priority[2] = pri_3_input.classList.toggle("active");
-    pri_1_input.classList.remove("active");
-    pri_2_input.classList.remove("active");
-    pri_4_input.classList.remove("active");
-    set_active_priority[0] = false;
-    set_active_priority[1] = false;
-    set_active_priority[3] = false;
-  });
-  pri_4_input.addEventListener("click", () => {
-    set_active_priority[3] = pri_4_input.classList.toggle("active");
-    pri_1_input.classList.remove("active");
-    pri_2_input.classList.remove("active");
-    pri_3_input.classList.remove("active");
-    set_active_priority[0] = false;
-    set_active_priority[1] = false;
-    set_active_priority[2] = false;
-  });
+
+  for (let i = 0; i < set_active_priority.length; i++) {
+    input_priority.children[i].addEventListener("click", () => {
+      for (let j = 0; j < set_active_priority.length; j++) {
+        if (i == j) {
+          console.log(input_priority.children[j].classList.add("active"));
+          set_active_priority[j] = true;
+        } else {
+          input_priority.children[j].classList.remove("active");
+          set_active_priority[j] = false;
+        }
+      }
+    });
+  }
 
   return set_active_priority;
 };
@@ -182,5 +172,52 @@ let show_input_task_box = () => {
   });
   remove_priority_selection();
 };
+
+let priority_check = (all_data, i) => {
+  let obj = [];
+  for (let j = 0; j < all_data.length; j++) {
+    if (all_data[j].priority == i) {
+      obj.push(all_data[j]);
+    }
+  }
+  return obj;
+};
+
+let show_filtered_data = (set_priority_filter) => {
+  let all_data = localStorage.getItem("task_arr");
+
+  if (all_data != null) {
+    all_data = JSON.parse(all_data);
+  }
+
+  for (let i = 0; i < set_priority_filter.length; i++) {
+    if (set_priority_filter[i] == true) {
+      all_data = priority_check(all_data, i);
+    }
+  }
+
+  show(all_data);
+};
+
+let filtered_tasks = () => {
+  let set_priority_filter = [false, false, false, false, false];
+
+  for (let i = 1; i < filtered_data.children.length; i++) {
+    filtered_data.children[i].addEventListener("click", () => {
+      for (let j = 1; j < filtered_data.children.length; j++) {
+        if (i == j) {
+          filtered_data.children[j].classList.add("active");
+          set_priority_filter[j - 1] = true;
+          show_filtered_data(set_priority_filter);
+        } else {
+          filtered_data.children[j].classList.remove("active");
+          set_priority_filter[j - 1] = false;
+        }
+      }
+    });
+  }
+};
+
+filtered_tasks();
 
 show_task_box();

@@ -52,6 +52,10 @@ body {
   text-align: center;
 }
 
+.pri_0 {
+  background-color: grey;
+}
+
 .pri_1 {
   background-color: red;
 }
