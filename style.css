@@ -44,23 +44,23 @@ body {
   border: 2px solid black;
 }
 
-#priority_title {
+.priority_title {
   text-align: center;
 }
 
-#pri_1 {
+.pri_1 {
   background-color: red;
 }
 
-#pri_2 {
+.pri_2 {
   background-color: yellow;
 }
 
-#pri_3 {
+.pri_3 {
   background-color: rgb(0, 0, 87);
 }
 
-#pri_4 {
+.pri_4 {
   background-color: green;
 }
 
@@ -148,7 +148,7 @@ body {
   padding-right: 0.5rem;
 }
 
-#done {
+.done {
   display: flex;
   justify-content: center;
   align-items: center;
