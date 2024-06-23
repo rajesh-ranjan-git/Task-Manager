@@ -7,10 +7,10 @@ let task = document.querySelector(".task");
 let no_task = document.querySelector(".main h1");
 let done = document.querySelector(".done");
 let input_data = document.querySelector(".input_content>textarea");
-let pri_1 = document.querySelector(".pri_1");
-let pri_2 = document.querySelector(".pri_2");
-let pri_3 = document.querySelector(".pri_3");
-let pri_4 = document.querySelector(".pri_4");
+let pri_1_input = document.querySelector("#pri_1_input");
+let pri_2_input = document.querySelector("#pri_2_input");
+let pri_3_input = document.querySelector("#pri_3_input");
+let pri_4_input = document.querySelector("#pri_4_input");
 let lock = document.querySelector(".task>svg");
 let task_arr = [];
 let task_obj = "";
@@ -39,6 +39,22 @@ delete_task.addEventListener("click", () => {
   }
 });
 
+let set_header_color = (task_arr, i) => {
+  console.log(task_arr[i]);
+  if (task_arr[i].priority == 0) {
+    task_item_container.children[i].firstChild.style.backgroundColor = "black";
+  } else if (task_arr[i].priority == 1) {
+    task_item_container.children[i].firstChild.style.backgroundColor = "red";
+  } else if (task_arr[i].priority == 2) {
+    task_item_container.children[i].firstChild.style.backgroundColor = "yellow";
+  } else if (task_arr[i].priority == 3) {
+    task_item_container.children[i].firstChild.style.backgroundColor =
+      "rgb(0, 0, 87)";
+  } else {
+    task_item_container.children[i].firstChild.style.backgroundColor = "green";
+  }
+};
+
 let show_task_box = () => {
   let task_arr = localStorage.getItem("task_arr");
   task_arr = JSON.parse(task_arr);
@@ -66,9 +82,62 @@ let show_task_box = () => {
           ></path>
         </svg>`;
       task_item_container.appendChild(task_item);
+
+      set_header_color(task_arr, i);
+
       task_counter++;
     }
   }
+};
+
+let activate_priority = () => {
+  let set_active_priority = [false, false, false, false];
+  pri_1_input.addEventListener("click", () => {
+    set_active_priority[0] = pri_1_input.classList.toggle("active");
+    console.log(set_active_priority[0]);
+    pri_2_input.classList.remove("active");
+    pri_3_input.classList.remove("active");
+    pri_4_input.classList.remove("active");
+    set_active_priority[1] = false;
+    set_active_priority[2] = false;
+    set_active_priority[3] = false;
+  });
+  pri_2_input.addEventListener("click", () => {
+    set_active_priority[1] = pri_2_input.classList.toggle("active");
+    pri_1_input.classList.remove("active");
+    pri_3_input.classList.remove("active");
+    pri_4_input.classList.remove("active");
+    set_active_priority[0] = false;
+    set_active_priority[2] = false;
+    set_active_priority[3] = false;
+  });
+  pri_3_input.addEventListener("click", () => {
+    set_active_priority[2] = pri_3_input.classList.toggle("active");
+    pri_1_input.classList.remove("active");
+    pri_2_input.classList.remove("active");
+    pri_4_input.classList.remove("active");
+    set_active_priority[0] = false;
+    set_active_priority[1] = false;
+    set_active_priority[3] = false;
+  });
+  pri_4_input.addEventListener("click", () => {
+    set_active_priority[3] = pri_4_input.classList.toggle("active");
+    pri_1_input.classList.remove("active");
+    pri_2_input.classList.remove("active");
+    pri_3_input.classList.remove("active");
+    set_active_priority[0] = false;
+    set_active_priority[1] = false;
+    set_active_priority[2] = false;
+  });
+
+  return set_active_priority;
+};
+
+let remove_priority_selection = () => {
+  pri_1_input.classList.remove("active");
+  pri_2_input.classList.remove("active");
+  pri_3_input.classList.remove("active");
+  pri_4_input.classList.remove("active");
 };
 
 let show_input_task_box = () => {
@@ -77,7 +146,9 @@ let show_input_task_box = () => {
   //       console.log(input_task.value);
   //     }
   //   });
+
   input_task.style.display = "block";
+  let active_priority = activate_priority();
   done.addEventListener("click", () => {
     task_arr = localStorage.getItem("task_arr");
 
@@ -90,9 +161,15 @@ let show_input_task_box = () => {
     if (input_data.value == "") return;
 
     task_obj = {
-      priority: "",
+      priority: 0,
       text: input_data.value,
     };
+
+    for (let i = 0; i < active_priority.length; i++) {
+      if (active_priority[i]) {
+        task_obj.priority = i + 1;
+      }
+    }
 
     task_arr.push(task_obj);
 
@@ -103,6 +180,7 @@ let show_input_task_box = () => {
     input_task.style.display = "none";
     show_task_box();
   });
+  remove_priority_selection();
 };
 
 show_task_box();
