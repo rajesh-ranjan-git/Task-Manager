@@ -14,7 +14,113 @@ let all_data = [];
 let task_arr = [];
 let task_obj = "";
 let counter = 0;
+let flag = false;
 
+// Add Task button
+add_task.addEventListener("click", () => {
+  add_task.classList.add("add_task_btn");
+  no_task.style.display = "none";
+  input_task.style.display = "block";
+  show_input_task_box();
+});
+
+//Show input task box function
+let show_input_task_box = () => {
+  let active_priority = activate_priority();
+
+  // input_task.addEventListener("keypress", (event) => {
+  //   if (event.key === "Enter") {
+  //     done.addEventListener.click();
+  //   }
+  // });
+
+  done.addEventListener("click", () => {
+    task_arr = localStorage.getItem("task_arr");
+
+    if (task_arr == null || task_arr.length == 0) {
+      task_arr = [];
+    } else {
+      task_arr = JSON.parse(task_arr);
+    }
+
+    if (input_data.value == "") {
+      input_task.style.display = "none";
+      add_task.classList.remove("add_task_btn");
+      return;
+    }
+
+    task_obj = {
+      priority: 0,
+      text: input_data.value,
+    };
+
+    set_priority(active_priority, task_obj);
+
+    task_arr.push(task_obj);
+
+    localStorage.setItem("task_arr", JSON.stringify(task_arr));
+
+    input_data.value = "";
+    add_task.classList.remove("add_task_btn");
+    input_task.style.display = "none";
+    show_task_box();
+  });
+
+  remove_priority_selection();
+};
+
+// Set priority for task
+let activate_priority = () => {
+  let set_active_priority = [false, false, false, false];
+
+  for (let i = 0; i < set_active_priority.length; i++) {
+    input_priority.children[i].addEventListener("click", () => {
+      for (let j = 0; j < set_active_priority.length; j++) {
+        if (i == j) {
+          input_priority.children[j].classList.add("active");
+          set_active_priority[j] = true;
+        } else {
+          input_priority.children[j].classList.remove("active");
+          set_active_priority[j] = false;
+        }
+      }
+    });
+  }
+
+  return set_active_priority;
+};
+
+// To remove the selected priority
+let remove_priority_selection = () => {
+  pri_1_input.classList.remove("active");
+  pri_2_input.classList.remove("active");
+  pri_3_input.classList.remove("active");
+  pri_4_input.classList.remove("active");
+};
+
+//Set priority
+let set_priority = (active_priority, task_obj) => {
+  for (let i = 0; i < active_priority.length; i++) {
+    if (active_priority[i]) {
+      task_obj.priority = i + 1;
+    }
+  }
+};
+
+// Show task container
+let show_task_box = () => {
+  let task_arr = localStorage.getItem("task_arr");
+  task_arr = JSON.parse(task_arr);
+
+  if (task_arr == null || task_arr.length == 0) {
+    no_task.style.display = "block";
+    task_item_container.style.display = "none";
+  } else {
+    show(task_arr);
+  }
+};
+
+// Show tasks
 let show = (task_arr) => {
   task_item_container.style.display = "flex";
   let task_counter = 1;
@@ -34,51 +140,20 @@ let show = (task_arr) => {
             d="M6 8V7C6 3.68629 8.68629 1 12 1C15.3137 1 18 3.68629 18 7V8H20C20.5523 8 21 8.44772 21 9V21C21 21.5523 20.5523 22 20 22H4C3.44772 22 3 21.5523 3 21V9C3 8.44772 3.44772 8 4 8H6ZM19 10H5V20H19V10ZM11 15.7324C10.4022 15.3866 10 14.7403 10 14C10 12.8954 10.8954 12 12 12C13.1046 12 14 12.8954 14 14C14 14.7403 13.5978 15.3866 13 15.7324V18H11V15.7324ZM8 8H16V7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7V8Z"
           ></path>
         </svg>`;
+
     task_item_container.appendChild(task_item);
 
     set_header_color(task_arr, i);
 
     task_counter++;
   }
-
-  let lock = document.querySelector(".task>svg");
 };
 
-add_task.addEventListener("click", () => {
-  add_task.classList.add("add_task_btn");
-  no_task.style.display = "none";
-  show_input_task_box();
-});
-
-delete_task.addEventListener("click", () => {
-  if (task_arr.length > 0) {
-    delete_task.classList.add("delete_task_btn");
-    for (let i = 0; i < task_arr.length; i++) {
-      let delete_item = document.getElementById(i + 1);
-      let temp = `#${i + 1} p`;
-      console.log(temp);
-      delete_item.addEventListener("dblclick", () => {
-        let delete_item_content = document.querySelector(temp.toString());
-        console.log(delete_item);
-        console.log(task_arr);
-      });
-      break;
-    }
-  }
-});
-
-clear_selection.addEventListener("click", () => {
-  let task_arr = localStorage.getItem("task_arr");
-  task_arr = JSON.parse(task_arr);
-
-  if (task_arr != null) {
-    show(task_arr);
-  }
-});
-
+// Set Task Header Color
 let set_header_color = (task_arr, i) => {
   if (task_arr[i].priority == 0) {
-    task_item_container.children[i].firstChild.style.backgroundColor = "grey";
+    task_item_container.children[i].firstChild.style.backgroundColor =
+      "rgb(80, 80, 80)";
   } else if (task_arr[i].priority == 1) {
     task_item_container.children[i].firstChild.style.backgroundColor = "red";
   } else if (task_arr[i].priority == 2) {
@@ -91,114 +166,49 @@ let set_header_color = (task_arr, i) => {
   }
 };
 
-let show_task_box = () => {
+// Edit task
+let edit_task = () => {
   let task_arr = localStorage.getItem("task_arr");
   task_arr = JSON.parse(task_arr);
 
   if (task_arr == null || task_arr.length == 0) {
-    no_task.style.display = "block";
-    task_item_container.style.display = "none";
-  } else {
-    show(task_arr);
+    return;
   }
-};
 
-let activate_priority = () => {
-  let set_active_priority = [false, false, false, false];
-
-  for (let i = 0; i < set_active_priority.length; i++) {
-    input_priority.children[i].addEventListener("click", () => {
-      for (let j = 0; j < set_active_priority.length; j++) {
-        if (i == j) {
-          console.log(input_priority.children[j].classList.add("active"));
-          set_active_priority[j] = true;
-        } else {
-          input_priority.children[j].classList.remove("active");
-          set_active_priority[j] = false;
-        }
-      }
+  for (let i = 0; i < task_arr.length; i++) {
+    let lock = task_item_container.children[i].children[2];
+    let task_data = task_item_container.children[i].children[1];
+    lock.addEventListener("click", () => {
+      edit(lock, task_data, i);
     });
   }
-
-  return set_active_priority;
 };
 
-let remove_priority_selection = () => {
-  pri_1_input.classList.remove("active");
-  pri_2_input.classList.remove("active");
-  pri_3_input.classList.remove("active");
-  pri_4_input.classList.remove("active");
-};
+//Edit function
+let edit = (lock, task_data, i) => {
+  lock.classList.add("edit_task");
+  let prev_value = task_data.textContent;
+  task_data.innerHTML = `<textarea class="task_textarea" placeholder="Update text here..." >${prev_value}</textarea>
+  <button>Edit</button>`;
 
-let show_input_task_box = () => {
-  //   input_task.addEventListener("keypress", (event) => {
-  //     if (event.key === "Enter") {
-  //       console.log(input_task.value);
-  //     }
-  //   });
+  task_data.children[1].addEventListener("click", () => {
+    task_data.innerHTML = task_data.firstChild.value;
+    lock.classList.remove("edit_task");
 
-  input_task.style.display = "block";
-  let active_priority = activate_priority();
-  done.addEventListener("click", () => {
-    task_arr = localStorage.getItem("task_arr");
+    let task_arr = localStorage.getItem("task_arr");
+    task_arr = JSON.parse(task_arr);
 
-    if (task_arr == null) {
-      task_arr = [];
-    } else {
-      task_arr = JSON.parse(task_arr);
-    }
-
-    if (input_data.value == "") return;
-
-    task_obj = {
-      priority: 0,
-      text: input_data.value,
-    };
-
-    for (let i = 0; i < active_priority.length; i++) {
-      if (active_priority[i]) {
-        task_obj.priority = i + 1;
+    for (let j = 0; j < task_arr.length; j++) {
+      if (i == j) {
+        task_arr[i].text = task_data.innerHTML;
       }
     }
 
-    task_arr.push(task_obj);
-
     localStorage.setItem("task_arr", JSON.stringify(task_arr));
-
-    input_data.value = "";
-    add_task.removeAttribute("class", "add_task_btn");
-    input_task.style.display = "none";
-    show_task_box();
   });
-  remove_priority_selection();
 };
 
-let priority_check = (all_data, i) => {
-  let obj = [];
-  for (let j = 0; j < all_data.length; j++) {
-    if (all_data[j].priority == i) {
-      obj.push(all_data[j]);
-    }
-  }
-  return obj;
-};
-
-let show_filtered_data = (set_priority_filter) => {
-  let all_data = localStorage.getItem("task_arr");
-
-  if (all_data != null) {
-    all_data = JSON.parse(all_data);
-  }
-
-  for (let i = 0; i < set_priority_filter.length; i++) {
-    if (set_priority_filter[i] == true) {
-      all_data = priority_check(all_data, i);
-    }
-  }
-
-  show(all_data);
-};
-
+// Filter tasks
 let filtered_tasks = () => {
   let set_priority_filter = [false, false, false, false, false];
 
@@ -214,10 +224,106 @@ let filtered_tasks = () => {
           set_priority_filter[j - 1] = false;
         }
       }
+      filtered_tasks();
     });
   }
 };
 
-filtered_tasks();
+// Show filtered tasks
+let show_filtered_data = (set_priority_filter) => {
+  let all_data = localStorage.getItem("task_arr");
+
+  if (all_data != null || all_data.length != 0) {
+    all_data = JSON.parse(all_data);
+  } else {
+    return;
+  }
+
+  for (let i = 0; i < set_priority_filter.length; i++) {
+    if (set_priority_filter[i] == true) {
+      all_data = priority_check(all_data, i);
+    }
+  }
+
+  if (all_data.length != 0) {
+    no_task.style.display = "none";
+    show(all_data);
+  } else {
+    no_task.style.display = "block";
+    task_item_container.style.display = "none";
+  }
+};
+
+// Checking priority for filter
+let priority_check = (all_data, i) => {
+  let obj = [];
+  for (let j = 0; j < all_data.length; j++) {
+    if (all_data[j].priority == i) {
+      obj.push(all_data[j]);
+    }
+  }
+  return obj;
+};
+
+//Clear filter
+clear_selection.addEventListener("click", () => {
+  // let task_arr = localStorage.getItem("task_arr");
+  // task_arr = JSON.parse(task_arr);
+
+  // if (task_arr != null) {
+  //   show_task_box();
+  // }
+  no_task.style.display = "none";
+  show_task_box();
+});
+
+// Delete Task button
+delete_task.addEventListener("click", () => {
+  if (flag == false) {
+    delete_task.classList.add("delete_task_btn");
+    for (let i = 0; i < task_item_container.children.length; i++) {
+      task_item_container.children[i].lastChild.style.display = "none";
+    }
+    delete_tasks();
+    flag = true;
+  } else {
+    delete_task.classList.remove("delete_task_btn");
+    for (let i = 0; i < task_item_container.children.length; i++) {
+      task_item_container.children[i].lastChild.style.display = "block";
+    }
+    flag = false;
+  }
+});
+
+// Delete task function
+let delete_tasks = () => {
+  for (let i = 0; i < task_item_container.children.length; i++) {
+    task_item_container.children[i].addEventListener("dblclick", () => {
+      del(task_item_container.children[i].children[1].innerText);
+      delete_tasks();
+    });
+  }
+};
+
+// Delete function
+let del = (task_content) => {
+  let d_task_arr = localStorage.getItem("task_arr");
+  d_task_arr = JSON.parse(d_task_arr);
+
+  for (let i = 0; i < d_task_arr.length; i++) {
+    if (d_task_arr[i].text == task_content) {
+      d_task_arr.splice(i, 1);
+      localStorage.setItem("task_arr", JSON.stringify(d_task_arr));
+      show_task_box();
+      for (let i = 0; i < task_item_container.children.length; i++) {
+        task_item_container.children[i].lastChild.style.display = "none";
+      }
+    }
+  }
+};
 
 show_task_box();
+
+edit_task();
+
+filtered_tasks();

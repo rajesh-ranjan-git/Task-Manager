@@ -1,0 +1,2 @@
+1. priority is getting the previous valuse and not waiting for function to return value which depends on eventlistener.
+2. 
