@@ -28,11 +28,11 @@ add_task.addEventListener("click", () => {
 let show_input_task_box = () => {
   let active_priority = activate_priority();
 
-  // input_task.addEventListener("keypress", (event) => {
-  //   if (event.key === "Enter") {
-  //     done.addEventListener.click();
-  //   }
-  // });
+  input_task.addEventListener("keypress", (event) => {
+    if (event.key === "Enter") {
+      done.click();
+    }
+  });
 
   done.addEventListener("click", () => {
     task_arr = localStorage.getItem("task_arr");
@@ -64,6 +64,7 @@ let show_input_task_box = () => {
     add_task.classList.remove("add_task_btn");
     input_task.style.display = "none";
     show_task_box();
+    edit_task();
   });
 
   remove_priority_selection();
@@ -189,7 +190,15 @@ let edit = (lock, task_data, i) => {
   lock.classList.add("edit_task");
   let prev_value = task_data.textContent;
   task_data.innerHTML = `<textarea class="task_textarea" placeholder="Update text here..." >${prev_value}</textarea>
-  <button>Edit</button>`;
+  <button id"edit_button" style="display : none">Edit</button>`;
+
+  document
+    .querySelector(".task_textarea")
+    .addEventListener("keypress", (event) => {
+      if (event.key === "Enter") {
+        task_data.children[1].click();
+      }
+    });
 
   task_data.children[1].addEventListener("click", () => {
     task_data.innerHTML = task_data.firstChild.value;
@@ -267,14 +276,12 @@ let priority_check = (all_data, i) => {
 
 //Clear filter
 clear_selection.addEventListener("click", () => {
-  // let task_arr = localStorage.getItem("task_arr");
-  // task_arr = JSON.parse(task_arr);
-
-  // if (task_arr != null) {
-  //   show_task_box();
-  // }
   no_task.style.display = "none";
+  for (let i = 1; i < filtered_data.children.length; i++) {
+    filtered_data.children[i].classList.remove("active");
+  }
   show_task_box();
+  edit_task();
 });
 
 // Delete Task button
@@ -315,6 +322,7 @@ let del = (task_content) => {
       d_task_arr.splice(i, 1);
       localStorage.setItem("task_arr", JSON.stringify(d_task_arr));
       show_task_box();
+      edit_task();
       for (let i = 0; i < task_item_container.children.length; i++) {
         task_item_container.children[i].lastChild.style.display = "none";
       }
